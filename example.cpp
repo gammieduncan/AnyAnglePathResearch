@@ -530,24 +530,33 @@ cornerId AnyAngleAlgorithm::ToCornerId(const uint16_t x, const uint16_t y, int d
 
 cost AnyAngleAlgorithm::FindPath(xyLoc from, xyLoc to)
 {
-
+    client::console.log("SixPointOne");
     cost c;
+    client::console.log("SixPointTwo");
     if (!UsingXYLocCont()) {
+        client::console.log("AAAA");
+        client::console.log("SixPointThree");
         xyloc_path_.clear();
+        client::console.log("SixPointFour");
         c = FindCornerLocPath(from, to, xyloc_path_);
-
+        client::console.log("SixPointFive");
         if (ShouldSmoothPaths()) {
+            client::console.log("SixPointSix");
             c = SmoothPath(xyloc_path_, smoothed_xyloc_path_);
         }
     }
     else {
+        client::console.log("SixPointThree");
         xyloc_cont_path_.clear();
+        client::console.log("SixPointFour");
         c = FindXYLocContPath(from, to, xyloc_cont_path_);
+        client::console.log("SixPointFive");
         if (ShouldSmoothPaths()) {
+            client::console.log("SixPointSix");
             c = SmoothPath(xyloc_cont_path_, smoothed_xyloc_cont_path_);
         }
     }
-
+    client::console.log("SixPointSeven");
     return c;
 }
 
@@ -1209,22 +1218,27 @@ cost ThetaStar::AStarSearch(const xyLoc from, const xyLoc to, std::vector<Corner
 {
     if (search_ >= MAX_SEARCH)
         ResetSearch();
-
+    client::console.log("SixPointFourOne");
     // Initialize the search.
     search_++;
+    client::console.log("SixPointFourTwo");
     path.clear();
-
+client::console.log("SixPointFourThree");
     cornerId start = ToCornerId(from);
+    client::console.log("SixPointFourThreeFive");
     cornerId goal = ToCornerId(to);
-
+    client::console.log("SixPointFourFour");
     open_list_.clear();
     GenerateState(start, goal);
     GenerateState(goal, goal);
-
+client::console.log("SixPointFourFive");
     corners_[start].g_val = 0;
     AddToOpen(start);
-
+    client::console.log("SixPointFourSix");
+    int lksajdk = 0;
     while (!open_list_.empty() && corners_[goal].g_val > GetMin().f_val + EPSILON) {
+        lksajdk++;
+        client::console.log(lksajdk);
         cornerId curr = GetMin().id;
         PopMin();
         for (unsigned int i = 0; i < corners_[curr].neighbors.size(); i++) {
