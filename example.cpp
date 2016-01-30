@@ -1512,53 +1512,64 @@ using namespace client;
 void LoadMap(const char *fname, std::vector<bool> &map, int &width, int &height)
 {
 	FILE *f;
+    console.log("Hello Third Point FiveOne");
 	f = fopen(fname, "r");
+    console.log("Hello Third Point FiveTwo");
 	if (f)
     {
+        console.log("Hello Third Point FiveThree");
 		fscanf(f, "type octile\nheight %d\nwidth %d\nmap\n", &height, &width);
+        console.log("Hello Third Point FiveFourth");
 		map.resize(height*width);
+        console.log("Hello Third Point FiveFifth");
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
 				char c;
+                console.log("Hello Third Point FiveSixth");
 				do {
 					fscanf(f, "%c", &c);
+                    console.log("Hello Third Point FiveSeventh");
 				} while (isspace(c));
 				map[y*width+x] = (c == '.' || c == 'G' || c == 'S');
+                console.log("Hello Third Point FiveEighth");
 			}
 		}
 		fclose(f);
+        console.log("Hello Third Point FiveNinth");
     }
+    console.log("Hello Third Point FiveNineNinth");
 }
 
 void loadCallback() {
      // Process the arguments
-	console.log("Hello");
+	console.log("Hello Second");
     char mapname[255];
 	char scenname[255];
 	std::vector<bool> mapData;
 	int width, height;
-	
+	console.log("Hello Third");
 	sprintf(mapname, "%s.map", "test");
+    console.log("Hello Third Point Five");
 	LoadMap(mapname, mapData, width, height);	// Read the map
-	
+	console.log("Hello Fourth");
 	//Timer t;
 	//t.StartTimer();
 	double totalTime = 0.0;
 	
     // A* with Euclidean distance heuristic
 	AnyAngleAlgorithm* thetaStar = new ThetaStar(mapData, width, height, A_STAR_EUC);
-    
+    console.log("Hello Fifth");
     // Solve the instances
 	xyLoc s, g;
     s.x = 0;
     s.y = 0;
     g.x = 1;
     g.y = 1;
-
+    console.log("Hello Sixth");
     thetaStar->FindPath(s,g);
-	
+	console.log("Hello Seventh");
 	//totalTime += t.EndTimer();
     
     // Mark the end of the experiment
