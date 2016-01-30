@@ -28,29 +28,52 @@ angular.module('anyAngle', [])
         //column: 32
       };
 
-      for(var i = 0; i < mapstring.size.row; i++) {
-        var str = "@"; //it's bordered by @ on all sides 
-        if(i == 0 || i > 20)
+      /*function searchingGrid(){ }
+
+      searchingGrid.prototype = {
+
+        constructor: searchingGrid,
+
+        toSearch : function(event) {
+
+          event.preventDefault(); */
+
+    //document.getElementById("searchButton").addEventListener("click", function(event)
+
+      document.getElementById("searchButton").addEventListener("click", handler)
+      
+      function handler(e) {
+        
+        for(var i = 0; i < mapstring.size.row; i++) 
         {
-          for(var q = 1; q < 30; q++)
+          var str = "@"; //it's bordered by @ on all sides 
+          if(i == 0 || i > 20)
           {
-            str = str.concat("@");
-          }
-        } 
-        else
-        {      
-          for(var j = 1; j < $scope.size.column; j++){
+              for(var q = 1; q < 31; q++)
+              {
+                str = str.concat("@");
+              }
+          } 
+                  else
+                  {      
+                    for(var j = 0; j < $scope.size.column; j++)
+                    {
 
-            if($scope.gridStatus[i-1][j] == false)
-            {
-              str = str.concat("@");
-            } else str = str.concat(".");
+                      if($scope.gridStatus[i-1][j] == false)
+                      {
+                        str = str.concat(".");
+                      } else str = str.concat("@");
 
-          }
+                  }
         }
-
+          str = str.concat("@");
           mapstring[i] = str;
       }
-      console.log(mapstring);
+        console.log(mapstring);
+      }; 
+
+        
+
+  
 
   });
