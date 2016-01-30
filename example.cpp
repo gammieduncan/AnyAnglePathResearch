@@ -1509,37 +1509,22 @@ void ThetaStar::PercolateDown(int index)
 
 using namespace client;
 
-void LoadMap(const char *fname, std::vector<bool> &map, int &width, int &height)
+void LoadMap(char mapple[4][4], std::vector<bool> &map, int &width, int &height)
 {
-	FILE *f;
-    console.log("Hello Third Point FiveOne");
-	f = fopen(fname, "r");
-    console.log("Hello Third Point FiveTwo");
-	if (f)
+	console.log("Hello Third Point FiveOne");
+	map.resize(height*width);
+    console.log("Hello Third Point FiveFifth");
+    for (int y = 0; y < height; y++)
     {
-        console.log("Hello Third Point FiveThree");
-		fscanf(f, "type octile\nheight %d\nwidth %d\nmap\n", &height, &width);
-        console.log("Hello Third Point FiveFourth");
-		map.resize(height*width);
-        console.log("Hello Third Point FiveFifth");
-		for (int y = 0; y < height; y++)
-		{
-			for (int x = 0; x < width; x++)
-			{
-				char c;
-                console.log("Hello Third Point FiveSixth");
-				do {
-					fscanf(f, "%c", &c);
-                    console.log("Hello Third Point FiveSeventh");
-				} while (isspace(c));
-				map[y*width+x] = (c == '.' || c == 'G' || c == 'S');
-                console.log("Hello Third Point FiveEighth");
-			}
-		}
-		fclose(f);
-        console.log("Hello Third Point FiveNinth");
+        for (int x = 0; x < width; x++)
+        {
+            console.log("Hello Third Point FiveSixth");
+            char c = mapple[y][x];
+            map[y*width+x] = (c == '.' || c == 'G' || c == 'S');
+            console.log("Hello Third Point FiveEighth");
+        }
     }
-    console.log("Hello Third Point FiveNineNinth");
+    console.log("Hello Third Point FiveNinth");
 }
 
 void loadCallback() {
@@ -1552,7 +1537,7 @@ void loadCallback() {
 	console.log("Hello Third");
 	sprintf(mapname, "%s.map", "test");
     console.log("Hello Third Point Five");
-	LoadMap(mapname, mapData, width, height);	// Read the map
+	LoadMap([['@','@','@','@'],['@','.','.','@'],['@','.','.','@'],['@','@','@','@']], mapData, width, height);	// Read the map
 	console.log("Hello Fourth");
 	//Timer t;
 	//t.StartTimer();
