@@ -4,8 +4,7 @@
 #include <stdint.h>
 #include <numeric>
 #include <algorithm>
-#include "ScenarioLoader.h"
-#include "Timer.h"
+//#include "Timer.h"
 #include "ThetaStar.h"
 
 using namespace client;
@@ -27,9 +26,7 @@ void LoadMap(const char *fname, std::vector<bool> &map, int &width, int &height)
 					fscanf(f, "%c", &c);
 				} while (isspace(c));
 				map[y*width+x] = (c == '.' || c == 'G' || c == 'S');
-				//printf("%c", c);
 			}
-			//printf("\n");
 		}
 		fclose(f);
     }
@@ -37,58 +34,51 @@ void LoadMap(const char *fname, std::vector<bool> &map, int &width, int &height)
 
 void loadCallback() {
      // Process the arguments
-	char mapname[255];
+	console.log("Hello");
+    char mapname[255];
 	char scenname[255];
 	std::vector<bool> mapData;
 	int width, height;
 	
-	sprintf(mapname, "%s.map", "arena2");
-	sprintf(scenname, "%s.map.scen", "arena2");
+	sprintf(mapname, "%s.map", "test");
 	LoadMap(mapname, mapData, width, height);	// Read the map
-	ScenarioLoader scen(scenname);				// Read the scenario file
 	
-	Timer t;
-	t.StartTimer();
+	//Timer t;
+	//t.StartTimer();
 	double totalTime = 0.0;
 	
-	// Prepare the algorithms
-	std::vector<AnyAngleAlgorithm*> algorithms;
     // A* with Euclidean distance heuristic
-	algorithms.push_back(new ThetaStar(mapData, width, height, A_STAR_EUC));
+	AnyAngleAlgorithm* thetaStar = new ThetaStar(mapData, width, height, A_STAR_EUC);
     
     //AnyAngleStatistics
-    for (int i = 0; i < algorithms.size(); i++)
-		algorithms[i]-> SetStatisticsFiles("arena2");
+    thetaStar-> SetStatisticsFiles("test");
     
     // Solve the instances
-	for (int x = 0; x < scen.GetNumExperiments(); x++)
-    {
-			xyLoc s, g;
-			s.x = scen.GetNthExperiment(x).GetStartX();
-			s.y = scen.GetNthExperiment(x).GetStartY();
-			g.x = scen.GetNthExperiment(x).GetGoalX();
-			g.y = scen.GetNthExperiment(x).GetGoalY();
+	xyLoc s, g;
+    s.x = 0;
+    s.y = 0;
+    g.x = 1;
+    g.y = 1;
 
-			for (int i = 0; i < algorithms.size(); i++)
-				algorithms[i]-> FindPath(s,g);
-    }
+    thetaStar->FindPath(s,g);
 	
-	totalTime += t.EndTimer();
+	//totalTime += t.EndTimer();
     
     //Print Statistics
-    for (int i = 0; i < algorithms.size(); i++)
-		algorithms[i]->PrintStatistics(); 
+    thetaStar->PrintStatistics(); 
     
     // Mark the end of the experiment
-	std::cout<<"Total time spent: "<<totalTime*1000<<"ms."<<std::endl<<std::endl;
+	console.log("Total time spent: ");
+    console.log(totalTime*1000);
+    console.log("ms.");
 	
 	// Clean up
-	for (int i = 0; i < algorithms.size(); i++)
-		delete algorithms[i];
+    delete thetaStar;
  }
 
 void webMain()
 {
+    console.log("Hello First");
     document.addEventListener("DOMContentLoaded",cheerp::Callback(loadCallback));
 }
 
