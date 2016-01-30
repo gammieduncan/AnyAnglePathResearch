@@ -30,9 +30,6 @@ class ThetaStar : public AnyAngleAlgorithm
 {
 public:
 	ThetaStar(std::vector<bool> &bits, int width, int height, int search_method = THETA_STAR);
-#ifdef ANY_ANGLE_RUNNING_IN_HOG
-	ThetaStar(MapEnvironment *env, int algorithm = THETA_STAR);
-#endif
     ~ThetaStar();
 
     const std::string GetName() const;

@@ -25,8 +25,8 @@ Bibtex:
 
 #ifndef NO_HOG  // Use '-DNO_HOG' in the makefile to compile this outside the HOG platform.
 #define ANY_ANGLE_RUNNING_IN_HOG    // Otherwise, the program assumes that it is running in HOG, which enables a specific constructor and visualization for HOG.
-#include "Map2DEnvironment.h"
-#include "FPUtil.h"
+//#include "Map2DEnvironment.h"
+//#include "FPUtil.h"
 #endif
 
 #include <string>

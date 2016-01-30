@@ -50,14 +50,20 @@ Bibtex:
 //
 // Now, corner x,y is located at the bottom right corner of cell x,y, and every corner is surrounded by cells so we don't have to do any out-of-map-bounds
 // checks.
-
+struct xyLoc {
+public:
+    xyLoc() {}
+    xyLoc(uint16_t _x, uint16_t _y) :x(_x), y(_y) {}
+    uint16_t x;
+    uint16_t y;
+};
 
 class AnyAngleAlgorithm {
 
 public:
 
 #ifdef ANY_ANGLE_RUNNING_IN_HOG
-    AnyAngleAlgorithm(const MapEnvironment *env);                // Constructs the class using a map given as a MapEnvironment in HOG
+    //AnyAngleAlgorithm(const MapEnvironment *env);                // Constructs the class using a map given as a MapEnvironment in HOG
 #endif
 	AnyAngleAlgorithm(const std::vector<bool> &bits, const int width, const int height);
 	~AnyAngleAlgorithm();
@@ -99,15 +105,6 @@ public:
     virtual void PrintAdditionalStatistics(AnyAngleStatistics* stats) {};
 #endif
 
-#ifdef ANY_ANGLE_RUNNING_IN_HOG
-	virtual void OpenGLDraw(const MapEnvironment *env) {};   // Visualization in HOG
-    virtual void ShowPath(const MapEnvironment *env, float r = 1, float g = 0, float b = 0);
-    virtual void ShowSmoothedPath(const MapEnvironment *env, float r = 0, float g = 0, float b = 1);
-    virtual void VisualizeAlgorithm(const MapEnvironment *env) {}    // Algorithm specific visualization.
-
-    virtual void SetDebugLoc(const xyLoc l) {debug_loc_ = ToCornerLoc(l); ProcessDebugLoc(debug_loc_);}
-    virtual void ProcessDebugLoc(const CornerLoc l) {}
-#endif
 
 protected:
 
@@ -215,25 +212,6 @@ protected:
     void ReportStatistics(const std::vector<xyLocCont> & path, AnyAngleStatistics* stats, const bool validate_path = true);
 #endif
 
-#ifdef ANY_ANGLE_RUNNING_IN_HOG
-    // Used to specify a corner and print/display information about it.
-    CornerLoc debug_loc_;
-
-    // Draws lines between consecutive points on the path. If draw_mid_points is true, also draws spheres at each point on the path.
-    // priority determines the size of the drawn spheres.
-    void DrawPath(const MapEnvironment *env, const std::vector<CornerLoc> &path, const bool draw_mid_points = true, const int priority = 0) const;
-    void DrawPath(const MapEnvironment *env, const std::vector<xyLocCont> &path, const bool draw_mid_points = true, const int priority = 0) const;
-
-    // Draws a sphere at the specified location, whose size is determined by 'priority'.
-    void DrawPoint(const MapEnvironment *env, const float x, const float y, const int priority = 0) const;
-    void DrawPoint(const MapEnvironment *env, const xyLocCont &l, const int priority = 0)   const {DrawPoint(env, (float)l.x, (float)l.y, priority);}
-    void DrawPoint(const MapEnvironment *env, const CornerLoc &l, const int priority = 0)       const {DrawPoint(env, (float)l.x, (float)l.y, priority);}
-
-    // Draw a line between two points
-    void DrawLine(const MapEnvironment *env, const float x1, const float y1, const float x2, const float y2) const;
-    void DrawLine(const MapEnvironment *env, const xyLocCont &l1, const xyLocCont &l2)const {DrawLine(env, (float)l1.x, (float)l1.y, (float)l2.x, (float)l2.y);}
-    void DrawLine(const MapEnvironment *env, const CornerLoc &l1, const CornerLoc &l2) const {DrawLine(env, (float)l1.x, (float)l1.y, (float)l2.x, (float)l2.y);}
-#endif
 
     // Returns true if the cell is unblocked
     bool IsTraversable(const xyLoc l) const    {return cells_[l.x][l.y].is_traversable;}

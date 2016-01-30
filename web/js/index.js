@@ -21,4 +21,36 @@ angular.module('anyAngle', [])
         }
 
       };
+
+      var mapstring = []; //this array of strings represents the map
+      mapstring.size = {
+        row: 22
+        //column: 32
+      };
+
+      for(var i = 0; i < mapstring.size.row; i++) {
+        var str = "@"; //it's bordered by @ on all sides 
+        if(i == 0 || i == 21)
+        {
+          for(var q = 1; q < 32; q++)
+          {
+            str = str.concat("@");
+          }
+        } 
+        else
+        {      
+          for(var j = 1; j < $scope.size.column - 1; j++){
+
+            if($scope.gridStatus[i][j] == false)
+            {
+              str = str.concat("@");
+            } else str = str.concat(".");
+
+          }
+        }
+
+          mapstring[i] = str;
+      }
+      console.log(mapstring);
+
   });
