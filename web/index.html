@@ -1,0 +1,24 @@
+<!doctype html>
+<html ng-app="anyAngle">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="js/index.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  <body>
+    <div class="navBar">
+      <h2 class="mainTitle">Any Angle Visualization</h2>
+    </div>
+    <div class="gridContainer" ng-controller="mainController">
+        <div class="row" ng-repeat="y in getNumber(size.row) track by $index">
+            <div class="grid" ng-class="{'clicked' : gridStatus[$parent.$index][$index] , 'startGrid' : $parent.$index == 19 && $index == 0 , 'goalGrid' : $parent.$index == 0 && $index == 29}" ng-repeat="x in getNumber(size.column) track by $index">
+            <div class="gridDummy"></div>
+            <div class="gridElement"></div>
+            <a class="gridClickable" href="" ng-click="gridClicked($parent.$index, $index)">
+            </a>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

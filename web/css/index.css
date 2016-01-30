@@ -1,0 +1,63 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+/*navBar*/
+.navBar{
+    position: fixed;
+    height:60px;
+    width:100%;
+    top:0px;
+    left:0;
+    right:0;
+    background-color: #0CAC73;
+}
+.mainTitle{
+    text-align: center;
+    color:white;
+}
+.gridContainer{
+    margin-top: 100px;
+    width:100%;
+}
+.row{
+    width:100%;
+}
+.clicked{
+  /*  background-color: black !Important;*/
+  background: url('../images/pokemonGridBlocked.png') !Important;
+   background-repeat: no-repeat !Important;
+  background-size: 100% !Important;
+}
+.startGrid{
+    background: green !important;
+}
+.goalGrid{
+    background: red !important;
+}
+.grid{
+    width:3.333333%;
+    background: url('../images/pokemonGrid.png');
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+
+}
+.gridElement{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.gridDummy{
+    padding-top: 100%;
+}
+.gridClickable{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:40px;
+    bottom:0;
+}
