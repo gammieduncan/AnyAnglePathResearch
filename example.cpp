@@ -5,6 +5,7 @@
 #include <numeric>
 #include <algorithm>
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <deque>
 #include <queue>
@@ -1520,7 +1521,8 @@ void LoadMap(char mapple[4][4], std::vector<bool> &map, int &width, int &height)
         {
             console.log("Hello Third Point FiveSixth");
             char c = mapple[y][x];
-            map[y*width+x] = (c == '.' || c == 'G' || c == 'S');
+            
+            map[y*width+x] = (&c == ".");
             console.log("Hello Third Point FiveEighth");
         }
     }
@@ -1537,7 +1539,8 @@ void loadCallback() {
 	console.log("Hello Third");
 	sprintf(mapname, "%s.map", "test");
     console.log("Hello Third Point Five");
-	LoadMap([['@','@','@','@'],['@','.','.','@'],['@','.','.','@'],['@','@','@','@']], mapData, width, height);	// Read the map
+    char mapple[4][4] = {{'@','@','@','@'},{'@','.','.','@'},{'@','.','.','@'},{'@','@','@','@'}};
+	LoadMap(mapple, mapData, width, height);	// Read the map
 	console.log("Hello Fourth");
 	//Timer t;
 	//t.StartTimer();
@@ -1561,9 +1564,6 @@ void loadCallback() {
 	console.log("Total time spent: ");
     console.log(totalTime*1000);
     console.log("ms.");
-	
-	// Clean up
-    delete thetaStar;
  }
 
 void webMain()
