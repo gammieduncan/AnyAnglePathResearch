@@ -70,8 +70,18 @@ int main(int argc, char **argv)
 
     ThetaStar* tss = new ThetaStar(mapData, width, height, THETA_STAR);
     
+    xyLoc start(100, 167);
+    xyLoc goal(150, 51);
+    std::vector<CornerLoc> path;
+    cost c;
+    c = tss->FindCornerLocPath(start, goal, path);
+    
     // Mark the end of the experiment
 	std::cout<<"Total time spent: "<<totalTime*1000<<"ms."<<std::endl<<std::endl;
+    std::cout<<"Length: "<<c<<std::endl;
+    for(int c = 0; c < path.size(); c++) {
+        std::cout<<path[c].x<<", "<<path[c].y<<std::endl;
+    }
 	
 	delete tss;
 

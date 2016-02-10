@@ -1,0 +1,45 @@
+Number of instances: 929
+Number of solved instances: 929
+Number of unsolved instances: 0
+
+Valid searches - Average solution cost: 176.784351
+Valid searches - Average search time (ms): 3.192428
+Valid searches - Average number of expansions: 6326.520990
+Valid searches - Average number of states generated: 6606.806243
+Valid searches - Average number of percolations: 47408.844995
+Valid searches - Average number of LOS checks: 0.000000
+Valid searches - Average number of heading changes: 120.739505
+Valid searches - Average number of freespace heading changes: 116.184069
+Valid searches - Average number of taut corner heading changes: 4.367061
+Valid searches - Average number of non-taut corner heading changes: 0.188375
+
+Valid searches - Total solution cost: 164232.661784
+Valid searches - Total search time (ms): 2965.766000
+Valid searches - Total number of expansions: 5877338
+Valid searches - Total number of states generated: 6137723
+Valid searches - Total number of percolations: 44042817
+Valid searches - Total number of LOS checks: 0
+Valid searches - Total number of heading changes: 112167
+Valid searches - Total number of freespace heading changes: 107935
+Valid searches - Total number of taut corner heading changes: 4057
+Valid searches - Total number of non-taut corner heading changes: 175
+
+Average search time (ms): 3.192428
+Average number of expansions: 6326.520990
+Average number of states generated: 6606.806243
+Average number of percolations: 47408.844995
+Average number of LOS checks: 0.000000
+Average number of heading changes: 120.739505
+Average number of freespace heading changes: 116.184069
+Average number of taut corner heading changes: 4.367061
+Average number of non-taut corner heading changes: 0.188375
+
+Total search time (ms): 2965.766000
+Total number of expansions: 5877338
+Total number of states generated: 6137723
+Total number of percolations: 44042817
+Total number of LOS checks: 0
+Total number of heading changes: 112167
+Total number of freespace heading changes: 107935
+Total number of taut corner heading changes: 4057
+Total number of non-taut corner heading changes: 175
