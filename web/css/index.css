@@ -16,6 +16,25 @@
     text-align: center;
     color:white;
 }
+.buttonBar{
+    position: fixed;
+    height:30px;
+    width:100%;
+    top:0px;
+    left:0;
+    right:0;
+    background-color: #0CAC73;
+} 
+.button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+} 
 .gridContainer{
     margin-top: 100px;
     width:100%;

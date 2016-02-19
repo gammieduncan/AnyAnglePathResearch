@@ -70,8 +70,11 @@ int main(int argc, char **argv)
 
     ThetaStar* tss = new ThetaStar(mapData, width, height, THETA_STAR);
     
-    xyLoc start(100, 167);
-    xyLoc goal(150, 51);
+    xyLoc start(2, 21); //Start and End
+    xyLoc goal(32, 2); //Start and End 
+    //TODO get the start and end from the .map file
+    //TODO get the heuristic, maybe from the http request?
+    //TODO for above: compile and have ready every search alg wanted for this project
     std::vector<CornerLoc> path;
     cost c;
     c = tss->FindCornerLocPath(start, goal, path);
@@ -79,6 +82,7 @@ int main(int argc, char **argv)
     // Mark the end of the experiment
 	std::cout<<"Total time spent: "<<totalTime*1000<<"ms."<<std::endl<<std::endl;
     std::cout<<"Length: "<<c<<std::endl;
+    std::cout<<"Path:"<<endl;
     for(int c = 0; c < path.size(); c++) {
         std::cout<<path[c].x<<", "<<path[c].y<<std::endl;
     }

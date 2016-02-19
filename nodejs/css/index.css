@@ -1,0 +1,107 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+/*navBar*/
+.navBar{
+    position: fixed;
+
+    width:100%;
+    top:0px;
+    left:0;
+    right:0;
+    z-index: 9999;
+    text-align: center;
+    background-color: white;
+}
+.mainTitle{
+    text-align: center;
+    color:black;
+}
+
+#searchButton{
+    width:100%;
+    margin:0px;
+}
+
+
+
+.buttonBar{
+    position: fixed;
+    height:30px;
+    width:100%;
+    top:0px;
+    left:0;
+    right:0;
+    background-color: #0CAC73;
+}
+.button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+}
+.gridContainer{
+    margin-top: 140px;
+    width:900px;
+    position: relative;
+}
+.row{
+    width:100%;
+    display: table;
+}
+.clicked{
+  /*  background-color: black !Important;*/
+  background: url('../images/pokemonGridBlocked.png') !Important;
+   background-repeat: no-repeat !Important;
+  background-size: 100% !Important;
+}
+.startGrid{
+    background: green !important;
+}
+.goalGrid{
+    background: red !important;
+}
+.grid{
+    width:3.333333%;
+    background: url('../images/pokemonGrid.png');
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+
+
+}
+.gridElement{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.gridDummy{
+    padding-top: 100%;
+}
+.gridClickable{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    vertical-align: top;
+    bottom:0;
+    z-index: 1000;
+}
+
+
+
+
+/*canvas*/
+#mainCanvas{
+    position: absolute;
+    width: 900px;
+    height: 600px;
+    z-index: 100;
+}
