@@ -1,0 +1,59 @@
+Graph level: 1
+Time to construct SSG (ms): 11.085000
+Time to partition the SSG (ms): 0.030000
+
+Number of corners: 59220
+Number of subgoals: 579
+Number of global subgoals: 579
+Total number of directed edges: 4928
+Total number of directed global edges: 4928
+Total number of directed ascending edges: 0
+Total number of directed local edges: 0
+Branching factor of the subgoal graph: 8.511226
+Branching factor of the global subgoal graph: 8.511226
+
+Number of instances: 929
+Number of solved instances: 929
+Number of unsolved instances: 0
+
+Valid searches - Average solution cost: 179.150247
+Valid searches - Average search time (ms): 0.065933
+Valid searches - Average number of expansions: 153.556512
+Valid searches - Average number of states generated: 220.476857
+Valid searches - Average number of percolations: 1115.177610
+Valid searches - Average number of LOS checks: 1.000000
+Valid searches - Average number of heading changes: 13.393972
+Valid searches - Average number of freespace heading changes: 0.000000
+Valid searches - Average number of taut corner heading changes: 6.897740
+Valid searches - Average number of non-taut corner heading changes: 6.496233
+
+Valid searches - Total solution cost: 166430.579875
+Valid searches - Total search time (ms): 61.252000
+Valid searches - Total number of expansions: 142654
+Valid searches - Total number of states generated: 204823
+Valid searches - Total number of percolations: 1036000
+Valid searches - Total number of LOS checks: 929
+Valid searches - Total number of heading changes: 12443
+Valid searches - Total number of freespace heading changes: 0
+Valid searches - Total number of taut corner heading changes: 6408
+Valid searches - Total number of non-taut corner heading changes: 6035
+
+Average search time (ms): 0.065933
+Average number of expansions: 153.556512
+Average number of states generated: 220.476857
+Average number of percolations: 1115.177610
+Average number of LOS checks: 1.000000
+Average number of heading changes: 13.393972
+Average number of freespace heading changes: 0.000000
+Average number of taut corner heading changes: 6.897740
+Average number of non-taut corner heading changes: 6.496233
+
+Total search time (ms): 61.252000
+Total number of expansions: 142654
+Total number of states generated: 204823
+Total number of percolations: 1036000
+Total number of LOS checks: 929
+Total number of heading changes: 12443
+Total number of freespace heading changes: 0
+Total number of taut corner heading changes: 6408
+Total number of non-taut corner heading changes: 6035
