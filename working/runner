@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "CPP should be made"
+echo "Running program now."
+./anyangle arena2
