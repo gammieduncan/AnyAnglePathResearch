@@ -1,8 +1,8 @@
-angular.module('anyAngle', ['ngMaterial'])
-  .controller('mainController', function($scope,$http) {
-         var lines = [];
-         var canvases = [];
-       canvases[0]=document.getElementById("mainCanvas");
+var lines = [];
+var canvases = [];
+
+function init(){
+  canvases[0]=document.getElementById("mainCanvas");
         canvases[1]=document.getElementById("mainCanvas2");
         canvases[2]=document.getElementById("mainCanvas3");
 
@@ -19,86 +19,148 @@ angular.module('anyAngle', ['ngMaterial'])
 
         lines[2] .lineWidth=1;
         lines[2] .beginPath();
+};
 
 
+angular.module('anyAngle', ['ngMaterial'])
+  .controller('mainController', function($scope,$http) {
 
+      init();
+
+
+      //init grid
       $scope.size = {
         row: 20,
         column: 30
       };
-      $scope.gridStatus = [];
+      $scope.cell = [];
+
+
       for(var i = 0 ; i < $scope.size.row; i ++){
-        $scope.gridStatus[i] = [];
+        $scope.cell[i] = [];
         for (var j = 0; j < $scope.size.column ; j++){
-          $scope.gridStatus[i][j] = false;
+          $scope.cell[i][j] = {};
+          $scope.cell[i][j].obstacle = false;
+          $scope.cell[i][j].corners = [];
+          //upperLeft corner
+          //var upperLeft = i + "" + j;
+          //upperRight corner
+          //var upperRight = (i + 1) + "" + j;
+          //lowerLeft corner
+          //var lowerLeft = i + "" + (j + 1);
+          //lowerRight corner
+          // var lowerRight = (i + 1) + "" + (j + 1);
+          // $scope.cell[i][j].corners.push(upperLeft);
+          // $scope.cell[i][j].corners.push(upperRight);
+          // $scope.cell[i][j].corners.push(lowerLeft);
+          // $scope.cell[i][j].corners.push(lowerRight);
         }
       }
+       $scope.corners = {};
+      //init corner
+      // for(var i = 0 ; i < $scope.size.row + 1; i ++){
+      //   for (var j = 0; j < $scope.size.column + 1; j++){
+      //     var cornerId = i + "" + j;
+      //     $scope.corners[cornerId] = {};
+      //     $scope.corners[cornerId].x = i;
+      //     $scope.corners[cornerId].y = j;
+      //     $scope.corners[cornerId].y = j;
+      //   }
+      // }
+
+
       $scope.getNumber = function(num) {
           return new Array(num);
       };
       $scope.gridClicked = function(row, column){
         if(!(row == 19 && column == 0) && !(row == 0 && column == 29)){
-            $scope.gridStatus[row][column] = !$scope.gridStatus[row][column];
+            $scope.cell[row][column].obstacle = !$scope.cell[row][column].obstacle;
         }
 
       };
+
+
 
       var mapstring = []; //this array of strings represents the map
 
 
 
       document.getElementById("searchButton").addEventListener("click", handler)
-      var size = {
-        row:22
-      };
-      function handler(e) {
-        $scope.drawPath();
-        for(var i = 0; i < size.row; i++)
-        {
-          var str = "@"; //it's bordered by @ on all sides
-          if(i == 0 || i > 20)
-          {
-              for(var q = 1; q < 31; q++)
-              {
-                str = str.concat("@");
-              }
-          }
-                  else
-                  {
-                    for(var j = 0; j < $scope.size.column; j++)
-                    {
 
-                      if($scope.gridStatus[i-1][j] == false)
-                      {
-                        str = str.concat(".");
-                      } else str = str.concat("@");
-
-                  }
-        }
-          str = str.concat("@");
-          mapstring[i] = str;
-      }
-        var payload = {
-          map: mapstring
-        };
-        console.log(payload.map);
+      // for(var i = 0 ; i < $scope.size.row; i ++){
+      //   for (var j = 0; j < $scope.size.column; j++){
+      //     //cornercase
+      //     if(i == 0 && j == 0){
+      //       var upperLeft = i + "" + j;
+      //       $scope.cell[i][j].corners.push(upperLeft);
+      //     }
+      //     if(i == 0 && j == 20){
+      //       var lowerLeft = i + "" + (j + 1);
+      //       $scope.cell[i][j].corners.push(lowerLeft);
+      //     }
+      //     if(i == 30 && j == 0){
+      //       var upperRight = (i + 1) + "" + j;
+      //       $scope.cell[i][j].corners.push(upperRight);
+      //     }
+      //     if(i == 30 && j = 20){
+      //       var lowerRight = (i + 1) + "" + (j + 1);
+      //       $scope.cell[i][j].corners.push(lowerRight);
+      //     }
+      //   }
+      // }
 
 
-         $http({
-                method: 'POST',
-                url: 'http://localhost:3000/RunAStar',
-                data: payload,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                          var str = [];
-                          for(var p in obj){
-                              str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-                          }
-                          return str.join('&');
-                          }
-           }).success(function(response) {
+      // var size = {
+      //   row:22
+      // };
+      // function handler(e) {
+      //   $scope.drawPath();
+      //   for(var i = 0; i < size.row; i++)
+      //   {
+      //     var str = "@"; //it's bordered by @ on all sides
+      //     if(i == 0 || i > 20)
+      //     {
+      //         for(var q = 1; q < 31; q++)
+      //         {
+      //           str = str.concat("@");
+      //         }
+      //     }
+      //             else
+      //             {
+      //               for(var j = 0; j < $scope.size.column; j++)
+      //               {
 
-          });
+      //                 if($scope.cell[i-1][j] == false)
+      //                 {
+      //                   str = str.concat(".");
+      //                 } else str = str.concat("@");
+
+      //             }
+      //   }
+      //     str = str.concat("@");
+      //     mapstring[i] = str;
+      // }
+      //   var payload = {
+      //     map: mapstring
+      //   };
+      //   console.log(payload.map);
+
+
+         // $http({
+         //        method: 'POST',
+         //        url: 'http://localhost:3000/RunAStar',
+         //        data: payload,
+         //        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+         //        transformRequest: function(obj) {
+         //                  var str = [];
+         //                  for(var p in obj){
+         //                      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+         //                  }
+         //                  return str.join('&');
+         //                  }
+         //   }).success(function(response) {
+
+         //  });
 
       };
 

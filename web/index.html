@@ -26,7 +26,7 @@
          <canvas height="600" width="900" id="mainCanvas2" class="mainCanvas"></canvas>
          <canvas height="600" width="900" id="mainCanvas3" class="mainCanvas"></canvas>
         <div class="row" ng-repeat="y in getNumber(size.row) track by $index">
-            <div class="grid" ng-class="{'clicked' : gridStatus[$parent.$index][$index] , 'startGrid' : $parent.$index == 19 && $index == 0 , 'goalGrid' : $parent.$index == 0 && $index == 29}" ng-repeat="x in getNumber(size.column) track by $index">
+            <div class="grid" ng-class="{'clicked' : cell[$parent.$index][$index].obstacle , 'startGrid' : $parent.$index == 19 && $index == 0 , 'goalGrid' : $parent.$index == 0 && $index == 29}" ng-repeat="x in getNumber(size.column) track by $index">
             <div class="gridDummy"></div>
             <div class="gridElement"></div>
             <a class="gridClickable" href="" ng-click="gridClicked($parent.$index, $index)">
