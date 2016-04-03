@@ -35,12 +35,11 @@ angular.module('anyAngle', ['ngMaterial'])
       };
       $scope.cell = [];
 
-
       for(var i = 0 ; i < $scope.size.row; i ++){
-        $scope.cell[i] = [];
+          $scope.cell[i] = [];
         for (var j = 0; j < $scope.size.column ; j++){
           $scope.cell[i][j] = {};
-          $scope.cell[i][j].obstacle = false;
+          $scope.cell[i][j].isObstacle = false;
           $scope.cell[i][j].corners = [];
           //upperLeft corner
           //var upperLeft = i + "" + j;
@@ -56,7 +55,7 @@ angular.module('anyAngle', ['ngMaterial'])
           // $scope.cell[i][j].corners.push(lowerRight);
         }
       }
-       $scope.corners = {};
+       $scope.corners = [];
       //init corner
       // for(var i = 0 ; i < $scope.size.row + 1; i ++){
       //   for (var j = 0; j < $scope.size.column + 1; j++){
@@ -74,7 +73,7 @@ angular.module('anyAngle', ['ngMaterial'])
       };
       $scope.gridClicked = function(row, column){
         if(!(row == 19 && column == 0) && !(row == 0 && column == 29)){
-            $scope.cell[row][column].obstacle = !$scope.cell[row][column].obstacle;
+            $scope.cell[row][column].isObstacle = !$scope.cell[row][column].isObstacle;
         }
 
       };
@@ -83,86 +82,256 @@ angular.module('anyAngle', ['ngMaterial'])
 
       var mapstring = []; //this array of strings represents the map
 
+      function checkCase(y,x){
+          var northWest = false;
+          var northEast = false;
+          var southWest = false;
+          var southEast = false;
+          var result = [];
+          //check northWest Block
+          if(x == 0 || y == 0){
+            northWest = true;
+          }else{
+            if($scope.cell[y- 1][x - 1].isObstacle){
+                northWest = true;
+            }
+          }
+
+          //check northEast Block
+          if(y == 0 || x == 30){
+            northEast = true;
+          }else{
+            if($scope.cell[y -1][x].isObstacle){
+                northEast = true;
+            }
+          }
+
+          //check southWest Block
+          if(x == 0 || y == 20){
+            southWest = true;
+          }else{
+            if($scope.cell[y][x - 1].isObstacle){
+                southWest = true;
+            }
+          }
+          //check southEast Block
+          if(x == 30 || y == 20){
+            southEast = true;
+          }else{
+            if($scope.cell[y][x].isObstacle){
+                southEast = true;
+            }
+          }
+
+          if(!northWest && !northEast && !southWest && !southEast){
+            result[0] = 0;
+            result[1] = [];
+            result[1] = [1,1,1,1];
+            return result; // all way normal
+          }
+
+          //three way normal
+          if(northWest && !northEast && !southWest && !southEast){
+             result[0] = 0;
+            result[1] = [];
+            result[1] = [0,1,1,1];
+            return result; //except northwest
+          }
+
+          if(!northWest && northEast && !southWest && !southEast){
+             result[0] = 0;
+            result[1] = [];
+            result[1] = [1,0,1,1];
+            return result; //except northeast
+          }
+          if (!northWest && !northEast && southWest && !southEast){
+             result[0] = 0;
+            result[1] = [];
+            result[1] = [1,1,1,0];
+            return result; //except southwest
+          }
+          if(!northWest && !northEast && !southWest && southEast){
+             result[0] = 0;
+            result[1] = [];
+            result[1] = [1,1,0,1];
+            return result; //except southeast
+          }
 
 
-      document.getElementById("searchButton").addEventListener("click", handler)
+          //two way normal
+          if(northWest && northEast && !southWest && !southEast){
+                result[0] = 0;
+            result[1] = [];
+            result[1] = [0,0,1,1];
+            return result; //except northwest and east
+          }
+          if(!northWest && northEast && !southWest && southEast){
+                result[0] = 0;
+            result[1] = [];
+            result[1] = [1,0,0,1];
+            return result; //except northeast and southeast
+          }
+          if(!northWest && !northEast && southWest && southEast){
+               result[0] = 0;
+            result[1] = [];
+            result[1] = [1,1,0,0];
+            return result; //except southwest and southeast
+          }
 
-      // for(var i = 0 ; i < $scope.size.row; i ++){
-      //   for (var j = 0; j < $scope.size.column; j++){
-      //     //cornercase
-      //     if(i == 0 && j == 0){
-      //       var upperLeft = i + "" + j;
-      //       $scope.cell[i][j].corners.push(upperLeft);
-      //     }
-      //     if(i == 0 && j == 20){
-      //       var lowerLeft = i + "" + (j + 1);
-      //       $scope.cell[i][j].corners.push(lowerLeft);
-      //     }
-      //     if(i == 30 && j == 0){
-      //       var upperRight = (i + 1) + "" + j;
-      //       $scope.cell[i][j].corners.push(upperRight);
-      //     }
-      //     if(i == 30 && j = 20){
-      //       var lowerRight = (i + 1) + "" + (j + 1);
-      //       $scope.cell[i][j].corners.push(lowerRight);
-      //     }
-      //   }
-      // }
-
-
-      // var size = {
-      //   row:22
-      // };
-      // function handler(e) {
-      //   $scope.drawPath();
-      //   for(var i = 0; i < size.row; i++)
-      //   {
-      //     var str = "@"; //it's bordered by @ on all sides
-      //     if(i == 0 || i > 20)
-      //     {
-      //         for(var q = 1; q < 31; q++)
-      //         {
-      //           str = str.concat("@");
-      //         }
-      //     }
-      //             else
-      //             {
-      //               for(var j = 0; j < $scope.size.column; j++)
-      //               {
-
-      //                 if($scope.cell[i-1][j] == false)
-      //                 {
-      //                   str = str.concat(".");
-      //                 } else str = str.concat("@");
-
-      //             }
-      //   }
-      //     str = str.concat("@");
-      //     mapstring[i] = str;
-      // }
-      //   var payload = {
-      //     map: mapstring
-      //   };
-      //   console.log(payload.map);
+          if(northWest && !northEast && southWest && !southEast){
+            result[0] = 0;
+            result[1] = [];
+            result[1] = [0,1,1,0];
+            return result; //except southwest and northwest
+          }
 
 
-         // $http({
-         //        method: 'POST',
-         //        url: 'http://localhost:3000/RunAStar',
-         //        data: payload,
-         //        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-         //        transformRequest: function(obj) {
-         //                  var str = [];
-         //                  for(var p in obj){
-         //                      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-         //                  }
-         //                  return str.join('&');
-         //                  }
-         //   }).success(function(response) {
+          //one corner
+          if(northWest && northEast && southWest && !southEast){
+              result[0] = 1;  // one corner
+            result[1] = [];
+            result[1] = [0,0,1,0];
+            return result;
+          }
+          if (northWest && northEast && !southWest && southEast){
+               result[0] = 1;  // one corner
+            result[1] = [];
+            result[1] = [0,0,0,1];
+            return result;
+          }
+          if(!northWest && northEast && southWest && southEast){
+              result[0] = 1;  // one corner
+            result[1] = [];
+            result[1] = [1,0,0,0];
+            return result;
+          }
+          if (northWest && !northEast && southWest && southEast){
+             result[0] = 1;  // one corner
+            result[1] = [];
+            result[1] = [0,1,0,0];
+            return result;
+          }
 
-         //  });
+
+        //two corners
+        if(!northWest && northEast && southWest && !southEast){
+          result[0] = 2;  // two corners
+            result[1] = [];
+            result[1] = [1,0,1,0];
+            return result;
+        }
+        if(northWest && !northEast && !southWest && southEast){
+             result[0] = 2;  // two corners
+            result[1] = [];
+            result[1] = [0,1,0,1];
+            return result;
+        }
 
       };
+
+      function createCorner(y,x,type){
+        var cornerObject = {
+          x: x,
+          y: y,
+          type: type
+        };
+        return cornerObject;
+      };
+
+
+      $scope.submit = function(){
+          var temp;
+          for(var i = 0; i < $scope.size.row + 1; i ++){
+            for(var j = 0; j < $scope.size.column + 1; j++){
+                temp = checkCase(i,j);
+
+                //if normal corner
+                if(temp[0] == 0){
+                    var cornerObj = createCorner(i,j,"normal");
+                    for(var k = 0; k < temp[1].length; k++){
+                      if(temp[1][k] == 1){
+                        if(k == 0){
+                          //northwest cell
+                          $scope.cell[i - 1][j - 1].corners[$scope.cell[i - 1][j - 1].corners.length] = cornerObj;
+                        }
+                        if(k == 1){
+                          //northeast cell
+                          $scope.cell[i - 1][j].corners[$scope.cell[i - 1][j].corners.length] = cornerObj;
+                        }
+                        if(k == 2){
+                          //southeast cell
+                          $scope.cell[i][j].corners[$scope.cell[i][j].corners.length] = cornerObj;
+                        }
+                        if(k == 3){
+                          //southwest cell
+                          $scope.cell[i][j - 1].corners[$scope.cell[i][j - 1].corners.length] = cornerObj;
+                        }
+                      }
+                    }
+                }
+
+                //if one corner
+                if(temp[0] == 1){
+                  for(var k = 0; k < temp[1].length; k++){
+                      if(temp[1][k] == 1){
+                        if(k == 0){
+                          //northwest cell
+                          var cornerObj = createCorner(i,j,"southWest");
+                          $scope.cell[i - 1][j - 1].corners[$scope.cell[i - 1][j - 1].corners.length] = cornerObj;
+                        }
+                        if(k == 1){
+                          //northeast cell
+                          var cornerObj = createCorner(i,j,"southEast");
+                          $scope.cell[i - 1][j].corners[$scope.cell[i - 1][j].corners.length] = cornerObj;
+                        }
+                        if(k == 2){
+                          //southeast cell
+                          var cornerObj = createCorner(i,j,"northWest");
+                          $scope.cell[i][j].corners[$scope.cell[i][j].corners.length] = cornerObj;
+                        }
+                        if(k == 3){
+                          //southwest cell
+                          var cornerObj = createCorner(i,j,"northEast");
+                          $scope.cell[i][j - 1].corners[$scope.cell[i][j - 1].corners.length] = cornerObj;
+                        }
+                      }
+                    }
+                }
+
+                // two corners special case
+                 if(temp[0] == 2){
+                  for(var k = 0; k < temp[1].length; k++){
+                      if(temp[1][k] == 1){
+                        if(k == 0){
+                          //northwest cell
+                          var cornerObj = createCorner(i,j,"southWest");
+                          $scope.cell[i - 1][j - 1].corners[$scope.cell[i - 1][j - 1].corners.length] = cornerObj;
+                        }
+                        if(k == 1){
+                          //northeast cell
+                          var cornerObj = createCorner(i,j,"southEast");
+                          $scope.cell[i - 1][j].corners[$scope.cell[i - 1][j].corners.length] = cornerObj;
+                        }
+                        if(k == 2){
+                          //southeast cell
+                          var cornerObj = createCorner(i,j,"northWest");
+                          $scope.cell[i][j].corners[$scope.cell[i][j].corners.length] = cornerObj;
+                        }
+                        if(k == 3){
+                          //southwest cell
+                          var cornerObj = createCorner(i,j,"northEast");
+                          $scope.cell[i][j - 1].corners[$scope.cell[i][j - 1].corners.length] = cornerObj;
+                        }
+                      }
+                    }
+                }
+
+            }
+          }
+
+          console.log("done");
+      };
+
 
 
 
