@@ -34,6 +34,7 @@ angular.module('anyAngle', ['ngMaterial'])
         column: 30
       };
       $scope.cell = [];
+      $scope.cornersMap = [];
 
       for(var i = 0 ; i < $scope.size.row; i ++){
           $scope.cell[i] = [];
@@ -41,32 +42,16 @@ angular.module('anyAngle', ['ngMaterial'])
           $scope.cell[i][j] = {};
           $scope.cell[i][j].isObstacle = false;
           $scope.cell[i][j].corners = [];
-          //upperLeft corner
-          //var upperLeft = i + "" + j;
-          //upperRight corner
-          //var upperRight = (i + 1) + "" + j;
-          //lowerLeft corner
-          //var lowerLeft = i + "" + (j + 1);
-          //lowerRight corner
-          // var lowerRight = (i + 1) + "" + (j + 1);
-          // $scope.cell[i][j].corners.push(upperLeft);
-          // $scope.cell[i][j].corners.push(upperRight);
-          // $scope.cell[i][j].corners.push(lowerLeft);
-          // $scope.cell[i][j].corners.push(lowerRight);
+        }
+      }
+      for(var i = 0 ; i < $scope.size.row + 1; i ++){
+          $scope.cornersMap[i] = [];
+        for (var j = 0; j < $scope.size.column + 1; j++){
+          $scope.cornersMap[i][j] = [];
         }
       }
        $scope.corners = [];
-      //init corner
-      // for(var i = 0 ; i < $scope.size.row + 1; i ++){
-      //   for (var j = 0; j < $scope.size.column + 1; j++){
-      //     var cornerId = i + "" + j;
-      //     $scope.corners[cornerId] = {};
-      //     $scope.corners[cornerId].x = i;
-      //     $scope.corners[cornerId].y = j;
-      //     $scope.corners[cornerId].y = j;
-      //   }
-      // }
-
+      
 
       $scope.getNumber = function(num) {
           return new Array(num);
@@ -160,7 +145,7 @@ angular.module('anyAngle', ['ngMaterial'])
 
           //two way normal
           if(northWest && northEast && !southWest && !southEast){
-                result[0] = 0;
+            result[0] = 0;
             result[1] = [];
             result[1] = [0,0,1,1];
             return result; //except northwest and east
@@ -188,7 +173,7 @@ angular.module('anyAngle', ['ngMaterial'])
 
           //one corner
           if(northWest && northEast && southWest && !southEast){
-              result[0] = 1;  // one corner
+            result[0] = 1;  // one corner
             result[1] = [];
             result[1] = [0,0,1,0];
             return result;
@@ -229,14 +214,304 @@ angular.module('anyAngle', ['ngMaterial'])
 
       };
 
+      function checkNeighborhood(corner){
+        var x = corner.x;
+        var y = corner.y;
+        //check not normal corner cases
+        if(corner.type == "northWest"){
+          //south
+          for(var k = 0; k < $scope.cornersMap[y + 1][x].length; k++){
+            if($scope.cornersMap[y + 1][x][k].type == "southWest" || $scope.cornersMap[y + 1][x][k].type == "normal"){
+              corner.south = $scope.cornersMap[y + 1][x][k];
+            }
+          }
+          //east
+          for(var k = 0; k < $scope.cornersMap[y][x + 1].length; k++){
+            if($scope.cornersMap[y][x + 1][k].type == "northEast" || $scope.cornersMap[y][x + 1][k].type == "normal"){
+              corner.east = $scope.cornersMap[y][x + 1][k];
+            }
+          }
+          //southeast
+          for(var k = 0; k < $scope.cornersMap[y + 1][x + 1].length; k++){
+            if($scope.cornersMap[y + 1][x + 1][k].type == "southEast" || $scope.cornersMap[y + 1][x + 1][k].type == "normal"){
+              corner.southEast = $scope.cornersMap[y + 1][x + 1][k];
+            }
+          }
+        }
+        else if(corner.type == "northEast"){
+          //west
+          for(var k = 0; k < $scope.cornersMap[y][x - 1].length; k++){
+            if($scope.cornersMap[y][x - 1][k].type == "northWest" || $scope.cornersMap[y][x - 1][k].type == "normal"){
+              corner.west = $scope.cornersMap[y][x - 1][k];
+            }
+          }
+          //south
+          for(var k = 0; k < $scope.cornersMap[y + 1][x].length; k++){
+            if($scope.cornersMap[y + 1][x][k].type == "southEast" || $scope.cornersMap[y + 1][x][k].type == "normal"){
+              corner.south = $scope.cornersMap[y + 1][x][k];
+            }
+          }
+          //southwest
+          for(var k = 0; k < $scope.cornersMap[y + 1][x - 1].length; k++){
+            if($scope.cornersMap[y + 1][x - 1][k].type == "southWest" || $scope.cornersMap[y + 1][x - 1][k].type == "normal"){
+              corner.southWest = $scope.cornersMap[y + 1][x - 1][k];
+            }
+          }
+        }
+        else if(corner.type == "southEast"){
+          //north
+          for(var k = 0; k < $scope.cornersMap[y - 1][x].length; k++){
+            if($scope.cornersMap[y - 1][x][k].type == "northEast" || $scope.cornersMap[y - 1][x][k].type == "normal"){
+              corner.north = $scope.cornersMap[y - 1][x][k];
+            }
+          }
+          //northWest
+          for(var k = 0; k < $scope.cornersMap[y - 1][x - 1].length; k++){
+            if($scope.cornersMap[y - 1][x - 1][k].type == "northWest" || $scope.cornersMap[y - 1][x - 1][k].type == "normal"){
+              corner.northWest = $scope.cornersMap[y - 1][x - 1][k];
+            }
+          }
+          //west
+          for(var k = 0; k < $scope.cornersMap[y][x - 1].length; k++){
+            if($scope.cornersMap[y][x - 1][k].type == "southWest" || $scope.cornersMap[y][x - 1][k].type == "normal"){
+              corner.west = $scope.cornersMap[y][x - 1][k];
+            }
+          }
+          
+        }
+        else if(corner.type == "southWest"){
+          //north
+          for(var k = 0; k < $scope.cornersMap[y - 1][x].length; k++){
+            if($scope.cornersMap[y - 1][x][k].type == "northWest" || $scope.cornersMap[y - 1][x][k].type == "normal"){
+              corner.northWest = $scope.cornersMap[y - 1][x][k];
+            }
+          }
+          //northEast
+          for(var k = 0; k < $scope.cornersMap[y - 1][x + 1].length; k++){
+            if($scope.cornersMap[y - 1][x + 1][k].type == "northEast" || $scope.cornersMap[y - 1][x + 1][k].type == "normal"){
+              corner.northEast = $scope.cornersMap[y - 1][x + 1][k];
+            }
+          }
+          //east
+          for(var k = 0; k < $scope.cornersMap[y][x + 1].length; k++){
+            if($scope.cornersMap[y][x + 1][k].type == "southEast" || $scope.cornersMap[y][x + 1][k].type == "normal"){
+              corner.east = $scope.cornersMap[y][x + 1][k];
+            }
+          }
+        }
+        else if(corner.type == "normal"){
+
+          var northWest = false;
+          var northEast = false;
+          var southWest = false;
+          var southEast = false;
+          //check northWest Block
+          if(x == 0 || y == 0){
+            northWest = true;
+          }else{
+            if($scope.cell[y- 1][x - 1].isObstacle){
+                northWest = true;
+            }
+          }
+          //check northEast Block
+          if(y == 0 || x == 30){
+            northEast = true;
+          }else{
+            if($scope.cell[y -1][x].isObstacle){
+                northEast = true;
+            }
+          }
+          //check southWest Block
+          if(x == 0 || y == 20){
+            southWest = true;
+          }else{
+            if($scope.cell[y][x - 1].isObstacle){
+                southWest = true;
+            }
+          }
+          //check southEast Block
+          if(x == 30 || y == 20){
+            southEast = true;
+          }else{
+            if($scope.cell[y][x].isObstacle){
+                southEast = true;
+            }
+          }
+          var addNorthWest = false;
+          var addNorth = false;
+          var addNorthEast = false;
+          var addEast = false;
+          var addSouthEast = false;
+          var addSouth = false;
+          var addSouthWest = false;
+          var addWest = false;
+
+          //all way case
+          if(!northWest && !northEast && !southWest && !southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+          //three way normal
+          if(northWest && !northEast && !southWest && !southEast){
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+          if(!northWest && northEast && !southWest && !southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+          if (!northWest && !northEast && southWest && !southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+            addWest = true;
+          }
+          if(!northWest && !northEast && !southWest && southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+
+
+          //two way normal
+          if(northWest && northEast && !southWest && !southEast){
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+          if(!northWest && northEast && !southWest && southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addSouth = true;
+            addSouthWest = true;
+            addWest = true;
+          }
+          if(!northWest && !northEast && southWest && southEast){
+            addNorthWest = true;
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addWest = true;
+          }
+          if(northWest && !northEast && southWest && !southEast){
+            addNorth = true;
+            addNorthEast = true;
+            addEast = true;
+            addSouthEast = true;
+            addSouth = true;
+          }
+
+
+          if(addNorthWest){
+             //add northWest
+            for(var k = 0; k < $scope.cornersMap[y - 1][x - 1].length; k++){
+              if($scope.cornersMap[y - 1][x - 1][k].type == "northWest" || $scope.cornersMap[y - 1][x - 1][k].type == "normal"){
+                corner.northWest = $scope.cornersMap[y - 1][x - 1][k];
+              }
+            }
+          }
+          if(addNorth){
+            //add north
+            for(var k = 0; k < $scope.cornersMap[y - 1][x].length; k++){
+              if($scope.cornersMap[y - 1][x][k].type == "northWest" || $scope.cornersMap[y - 1][x][k].type == "northEast" ||$scope.cornersMap[y - 1][x][k].type == "normal"){
+                corner.northWest = $scope.cornersMap[y - 1][x][k];
+              }
+            }
+          }
+          if(addNorthEast){
+            //add northEast
+            for(var k = 0; k < $scope.cornersMap[y - 1][x + 1].length; k++){
+              if($scope.cornersMap[y - 1][x + 1][k].type == "northEast" || $scope.cornersMap[y - 1][x + 1][k].type == "normal"){
+                corner.northEast = $scope.cornersMap[y - 1][x + 1][k];
+              }
+            }
+          }
+          if(addEast){
+            //add east
+            for(var k = 0; k < $scope.cornersMap[y][x + 1].length; k++){
+              if($scope.cornersMap[y][x + 1][k].type == "northEast" || $scope.cornersMap[y][x + 1][k].type == "southEast" || $scope.cornersMap[y][x + 1][k].type == "normal"){
+                corner.east = $scope.cornersMap[y][x + 1][k];
+              }
+            }
+          }
+          if(addSouthEast){
+            //add southEast
+            for(var k = 0; k < $scope.cornersMap[y + 1][x + 1].length; k++){
+              if($scope.cornersMap[y + 1][x + 1][k].type == "southEast" || $scope.cornersMap[y + 1][x + 1][k].type == "normal"){
+                corner.southEast = $scope.cornersMap[y + 1][x + 1][k];
+              }
+            }
+          }
+          if(addSouth){
+            //add south
+            for(var k = 0; k < $scope.cornersMap[y + 1][x].length; k++){
+              if($scope.cornersMap[y + 1][x][k].type == "southEast" || $scope.cornersMap[y + 1][x][k].type == "southWest" || $scope.cornersMap[y + 1][x][k].type == "normal"){
+                corner.south = $scope.cornersMap[y + 1][x][k];
+              }
+            }
+          }
+          if(addSouthWest){
+            //add southWest
+            for(var k = 0; k < $scope.cornersMap[y + 1][x - 1].length; k++){
+              if($scope.cornersMap[y + 1][x - 1][k].type == "southWest" || $scope.cornersMap[y + 1][x - 1][k].type == "normal"){
+                corner.southWest = $scope.cornersMap[y + 1][x - 1][k];
+              }
+            }
+          }
+          if(addWest){
+            //add west
+            for(var k = 0; k < $scope.cornersMap[y][x - 1].length; k++){
+              if($scope.cornersMap[y][x - 1][k].type == "southWest" || $scope.cornersMap[y][x - 1][k].type == "northWest" ||$scope.cornersMap[y][x - 1][k].type == "normal"){
+                corner.west = $scope.cornersMap[y][x - 1][k];
+              }
+            }
+          }
+        }
+      };
+
       function createCorner(y,x,type){
         var cornerObject = {
           x: x,
           y: y,
-          type: type
+          type: type,
+          northWest: null,
+          north: null,
+          northEast: null,
+          east: null,
+          southEast: null,
+          south: null,
+          southWest: null,
+          west: null
         };
         return cornerObject;
       };
+
+
 
 
       $scope.submit = function(){
@@ -248,6 +523,7 @@ angular.module('anyAngle', ['ngMaterial'])
                 //if normal corner
                 if(temp[0] == 0){
                     var cornerObj = createCorner(i,j,"normal");
+                    $scope.cornersMap[i][j].push(cornerObj);
                     for(var k = 0; k < temp[1].length; k++){
                       if(temp[1][k] == 1){
                         if(k == 0){
@@ -276,12 +552,12 @@ angular.module('anyAngle', ['ngMaterial'])
                       if(temp[1][k] == 1){
                         if(k == 0){
                           //northwest cell
-                          var cornerObj = createCorner(i,j,"southWest");
+                          var cornerObj = createCorner(i,j,"southEast");
                           $scope.cell[i - 1][j - 1].corners[$scope.cell[i - 1][j - 1].corners.length] = cornerObj;
                         }
                         if(k == 1){
                           //northeast cell
-                          var cornerObj = createCorner(i,j,"southEast");
+                          var cornerObj = createCorner(i,j,"southWest");
                           $scope.cell[i - 1][j].corners[$scope.cell[i - 1][j].corners.length] = cornerObj;
                         }
                         if(k == 2){
@@ -294,6 +570,7 @@ angular.module('anyAngle', ['ngMaterial'])
                           var cornerObj = createCorner(i,j,"northEast");
                           $scope.cell[i][j - 1].corners[$scope.cell[i][j - 1].corners.length] = cornerObj;
                         }
+                        $scope.cornersMap[i][j].push(cornerObj);
                       }
                     }
                 }
@@ -304,12 +581,12 @@ angular.module('anyAngle', ['ngMaterial'])
                       if(temp[1][k] == 1){
                         if(k == 0){
                           //northwest cell
-                          var cornerObj = createCorner(i,j,"southWest");
+                          var cornerObj = createCorner(i,j,"southEast");
                           $scope.cell[i - 1][j - 1].corners[$scope.cell[i - 1][j - 1].corners.length] = cornerObj;
                         }
                         if(k == 1){
                           //northeast cell
-                          var cornerObj = createCorner(i,j,"southEast");
+                          var cornerObj = createCorner(i,j,"southWest");
                           $scope.cell[i - 1][j].corners[$scope.cell[i - 1][j].corners.length] = cornerObj;
                         }
                         if(k == 2){
@@ -322,6 +599,7 @@ angular.module('anyAngle', ['ngMaterial'])
                           var cornerObj = createCorner(i,j,"northEast");
                           $scope.cell[i][j - 1].corners[$scope.cell[i][j - 1].corners.length] = cornerObj;
                         }
+                        $scope.cornersMap[i][j].push(cornerObj);
                       }
                     }
                 }
@@ -329,6 +607,15 @@ angular.module('anyAngle', ['ngMaterial'])
             }
           }
 
+
+          //load each corner's neighborhoods
+          for(var i = 0; i < $scope.size.row + 1; i ++){
+            for(var j = 0; j < $scope.size.column + 1; j++){
+              for(var o = 0; o < $scope.cornersMap[i][j].length; o++){
+                checkNeighborhood($scope.cornersMap[i][j][o]);
+              }       
+            }
+          }
           console.log("done");
       };
 
